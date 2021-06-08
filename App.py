@@ -1,20 +1,16 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_mysqldb import MySQL
 
-# initializations
 app = Flask(__name__)
 
-# Mysql Connection
 app.config['MYSQL_HOST'] = 'localhost' 
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'flaskcrud'
 mysql = MySQL(app)
 
-# settings
 app.secret_key = "mysecretkey"
 
-# routes
 @app.route('/')
 def Index():
     cur = mysql.connection.cursor()
@@ -54,10 +50,10 @@ def update_contact(id):
         cur.execute("""
             UPDATE contacts
             SET fullname = %s,
-                email = %s,
-                phone = %s
+                phone = %s,
+                email = %s
             WHERE id = %s
-        """, (fullname, email, phone, id))
+        """, (fullname, phone, email, id))
         flash('Contacto actualizado exitosamente!')
         mysql.connection.commit()
         return redirect(url_for('Index'))
